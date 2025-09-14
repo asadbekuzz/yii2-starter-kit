@@ -1,33 +1,6 @@
-version: "3.7"
+version: "3.8"
 
 services:
-  frontend:
-    build: frontend
-    volumes:
-      # Mount source-code for development
-      - ./:/app
-
-  backend:
-    build: backend
-    volumes:
-      # Mount source-code for development
-      - ./:/app
-
-  console:
-    build: console
-    volumes:
-      # Re-use local composer cache via host-volume
-      - ~/.composer-docker/cache:/root/.composer/cache:delegated
-      # Mount source-code for development
-      - ./:/app
-    working_dir: /app
-
-  storage:
-    build: storage
-    volumes:
-      # Mount source-code for development
-      - ./:/app
-
   api:
     build: api
     volumes:
@@ -43,21 +16,6 @@ services:
       - ./docker/nginx/vhost.conf:/etc/nginx/conf.d/vhost.conf
     depends_on:
       - api
-      - frontend
-      - backend
-      - console
-      - storage
-
-  node:
-    image: node:16-alpine
-    volumes:
-      - ./:/app
-    working_dir: /app
-
-  mailcatcher:
-    image: schickling/mailcatcher:latest
-    ports:
-      - 1080:1080
 
   db:
     image: mysql:8
