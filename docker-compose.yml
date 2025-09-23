@@ -1,35 +1,42 @@
-version: "3.8"
-
 services:
-  api:
-    build: api
+  app:
+    build: docker/php
     volumes:
-      # Mount source-code for development
       - ./:/app
+    networks:
+      - project-network
+    depends_on:
+      - db
 
   nginx:
     image: nginx:stable-alpine
     ports:
-      - 80:80
+      - "80:80"
     volumes:
       - ./:/app
       - ./docker/nginx/vhost.conf:/etc/nginx/conf.d/vhost.conf
+    networks:
+      - project-network
     depends_on:
-      - api
+      - app
 
   db:
-    image: mysql:8
-    volumes:
-      - /var/lib/mysql
-      - ./docker/mysql/config.cnf:/etc/mysql/conf.d/config.cnf
-    ports:
-      - 3306:3306
+    image: postgres:17
+    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: yii2-starter-kit
-      MYSQL_USER: ysk_dbu
-      MYSQL_PASSWORD: ysk_pass
+      POSTGRES_USER: yii2user
+      POSTGRES_PASSWORD: yii2pass
+      POSTGRES_DB: yii2db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - project-network
+
+volumes:
+  postgres_data:
 
 networks:
-  default:
-    name: yii2-starter-kit_default
+  project-network:
+    driver: bridge
