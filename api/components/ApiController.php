@@ -2,12 +2,9 @@
 
 namespace api\components;
 
-use api\modules\common\forms\Pkcs7Form;
-use common\models\Pkcs7Log;
 use Yii;
 use common\behaviors\RequestLogBehavior;
 use yii\base\Model;
-use yii\db\Exception;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\ContentNegotiator;
 use yii\filters\Cors;
@@ -46,56 +43,10 @@ abstract class ApiController extends Controller
                     ],
                 ],
 
-
                 'bearerAuth' => [
                     'class' => HttpBearerAuth::class,
-
-
-                    'except' => [
-                        'options',
-                        'login',
-                        'challenge',
-                        'login-pkcs7',
-                        'login-pks7-ping',
-                        'signup',
-                        'signup-no-resident',
-                        'region-list',
-                        'district-list',
-                        'active',
-                        'active-lots',
-                        'contract-pdf',
-                        'active-lots-selection',
-                        'economic-activities-type',
-                        'organization-legal-form',
-                        'frontend-timestamp',
-
-                    ],
-
-
-                    'optional' => [
-                        'active-lots-view',
-                        'offers',
-                        'download-file',
-                        'mfo-list',
-                        'auction-view',
-                        'announce-list',
-                        'product-view',
-                        'product-detail',
-                        'black-list',
-                        'statistics',
-                        'classifier-category-list',
-                        'classifier-list',
-                        'country-list',
-                        'list-district',
-                        'get-protocol',
-                        'get-protocol-not-realized',
-                        'get-discussion-protocol',
-                        'classifier-category-index',
-                        'news-list',
-                        'one-new-view',
-                        'similar-news',
-                        'contract-file',
-                    ]
+                    'except' => [],
+                    'optional' => []
                 ],
                 [
                     'class' => RequestLogBehavior::class,
